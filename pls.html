@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script type="text/javascript" src="assets/js/three.js"></script>
+	<script type="text/javascript" src="assets/js/physi.js"></script>
+	<script src="assets/js/OrbitControls.js"></script>
+
+
+</head>
+
+<body>
+	<div id="viewport"></div>
+
+<script type="text/javascript">
+
+	'use strict';
+
+	Physijs.scripts.worker = 'physijs_worker.js';
+	Physijs.scripts.ammo = 'ammo.js';
+
+	var initScene, render, renderer, scene, camera, box, ground, caja2;
+
+	initScene = function() {
+		renderer = new THREE.WebGLRenderer({ antialias: true });
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		scene = new Physijs.Scene;
+
+		camera = new THREE.PerspectiveCamera(
+			35,
+			window.innerWidth / window.innerHeight,
+			1,
+			1000
+		);
+		camera.position.set( 60, 50, 60 );
+		camera.lookAt( scene.position );
+		scene.add( camera );
+
+		var ambient = new THREE.AmbientLight(0xFFFFFF, 1.0);
+		scene.add(ambient);
+		var control = new THREE.OrbitControls(camera, renderer.domElement);
+		//piso
+		var piso_material = Physijs.createMaterial(
+			new THREE.MeshLambertMaterial({ color: 0x888888, transparent:true, opacity:1, wireframe:true }),
+			.8,
+			.3
+		);
+
+		ground = new Physijs.BoxMesh(
+			new THREE.BoxGeometry(100, 1, 100),
+			piso_material,
+			0 // mass
+		);
+
+		scene.add( ground );
+		var bg2 = new THREE.BoxGeometry( 5, 2, 2 );
+		var bm = new THREE.MeshLambertMaterial({ color: 0x888888, transparent:true, opacity:1, wireframe:true });
+		caja2 = new Physijs.BoxMesh(bg2,bm, 1);
+		scene.add(caja2);
+		caja2.position.y += 15;
+		caja2.__dirtyPosition = true;
+
+		requestAnimationFrame( render );
+	};
+
+	render = function() {
+		scene.simulate(); // run physics
+		renderer.render( scene, camera); // render the scene
+		requestAnimationFrame( render );
+	};
+
+	window.onload = initScene();
+
+	</script>
+</body>
+</html>
