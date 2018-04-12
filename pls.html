@@ -1,78 +1,84 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-	<script type="text/javascript" src="assets/js/three.js"></script>
-	<script type="text/javascript" src="assets/js/physi.js"></script>
+  <title>Grua 3D</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="HTML5 website template">
+  <meta name="keywords" content="global, template, html, sass, jquery">
+  <meta name="author" content="Bucky Maler">
+  <link rel="stylesheet" href="assets/css/main.css">
+	<script src="assets/js/three.js"></script>
+	<script src="assets/js/physi.js"></script>
 	<script src="assets/js/OrbitControls.js"></script>
-
-
+	<script src="assets/js/objects/Reflector.js"></script>
+	<script src="assets/js/objects/Refractor.js"></script>
+	<script src="assets/js/objects/Water.js"></script>
 </head>
-
 <body>
-	<div id="viewport"></div>
 
-<script type="text/javascript">
+<!-- notification for small viewports and landscape oriented smartphones -->
+<div class="device-notification">
+  <a class="device-notification--logo" href="#0">
+    <p>RODRIGO ALVARADO - 16106</p>
+  </a>
+  <p class="device-notification--message">Adaptative.</p>
+</div>
 
-	'use strict';
+<div class="perspective effect-rotate-left">
+  <div class="container"><div class="outer-nav--return"></div>
+    <div id="viewport" class="l-viewport">
+      <div class="l-wrapper">
 
-	Physijs.scripts.worker = 'physijs_worker.js';
-	Physijs.scripts.ammo = 'ammo.js';
+        <nav class="l-side-nav">
+          <ul class="side-nav">
+            <li class="is-active"><span>Instrucciones</span></li>
+            <li><span>Jugar</span></li>
+          </ul>
+        </nav>
+        <ul class="l-main-content main-content">
+          <li class="l-section section section--is-active">
+            <div class="intro">
+              <div class="intro--banner">
+                <h1>Poderoso<br>Barquito<br>3D</h1>
+                <img src="assets/tex/grua.png" alt="Welcome">
+              </div>
+              <div class="intro--options">
+                <a href="#0">
+                  <h3>MOVIMIENTO</h3>
+                  <p>Usa las teclas WASD para mover el barco, y 5123 para mover la grua</p>
+                </a>
+                <a href="#0">
+                  <h3>TOMAR &amp; SOLTAR CAJAS</h3>
+                  <p>Para tomar una caja, colisiona con ella. Para soltarla, preiona "G"</p>
+                  <h3>CAMBIO DE CAMARA</h3>
+                  <p>Puedes cambiar de camara presionando la tecla "C"</p>
+                </a>
+                <a href="#0">
+                  <h3>CONTROLAR LA GRUA</h3>
+                  <p>Para elevar o bajar la grua puedes presionar "+" y "-". Utiliza "0" y "." para controlar el brazo extendible y "8" y "9" para bajar y subir el agarrador. Con "4" y "6" puedes hacer gira el brazo de la grua </p>
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="l-section section">
+            <div class="work" id="canvas">
+              <script src="assets/js/main.js"></script>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <ul class="outer-nav">
+    <li class="is-active">Instrucciones</li>
+    <li>Jugar</li>
+  </ul>
+</div>
 
-	var initScene, render, renderer, scene, camera, box, ground, caja2;
-
-	initScene = function() {
-		renderer = new THREE.WebGLRenderer({ antialias: true });
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
-
-		scene = new Physijs.Scene;
-
-		camera = new THREE.PerspectiveCamera(
-			35,
-			window.innerWidth / window.innerHeight,
-			1,
-			1000
-		);
-		camera.position.set( 60, 50, 60 );
-		camera.lookAt( scene.position );
-		scene.add( camera );
-
-		var ambient = new THREE.AmbientLight(0xFFFFFF, 1.0);
-		scene.add(ambient);
-		var control = new THREE.OrbitControls(camera, renderer.domElement);
-		//piso
-		var piso_material = Physijs.createMaterial(
-			new THREE.MeshLambertMaterial({ color: 0x888888, transparent:true, opacity:1, wireframe:true }),
-			.8,
-			.3
-		);
-
-		ground = new Physijs.BoxMesh(
-			new THREE.BoxGeometry(100, 1, 100),
-			piso_material,
-			0 // mass
-		);
-
-		scene.add( ground );
-		var bg2 = new THREE.BoxGeometry( 5, 2, 2 );
-		var bm = new THREE.MeshLambertMaterial({ color: 0x888888, transparent:true, opacity:1, wireframe:true });
-		caja2 = new Physijs.BoxMesh(bg2,bm, 1);
-		scene.add(caja2);
-		caja2.position.y += 15;
-		caja2.__dirtyPosition = true;
-
-		requestAnimationFrame( render );
-	};
-
-	render = function() {
-		scene.simulate(); // run physics
-		renderer.render( scene, camera); // render the scene
-		requestAnimationFrame( render );
-	};
-
-	window.onload = initScene();
-
-	</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-2.2.4.min.js"><\/script>')</script>
+<script src="assets/js/functions-min.js"></script>
 </body>
 </html>
